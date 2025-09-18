@@ -24,6 +24,7 @@ import (
 	velesanthropicapikey "github.com/google/osv-scalibr/veles/secrets/anthropicapikey"
 	velesazuretoken "github.com/google/osv-scalibr/veles/secrets/azuretoken"
 	"github.com/google/osv-scalibr/veles/secrets/dockerhubpat"
+	veleselasticcloudapikey "github.com/google/osv-scalibr/veles/secrets/elasticcloudapikey"
 	velesgcpapikey "github.com/google/osv-scalibr/veles/secrets/gcpapikey"
 	velesgcpsak "github.com/google/osv-scalibr/veles/secrets/gcpsak"
 	"github.com/google/osv-scalibr/veles/secrets/gitlabpat"
@@ -135,6 +136,8 @@ func velesSecretToProto(s veles.Secret) (*spb.SecretData, error) {
 		return hashicorpVaultAppRoleCredentialsToProto(t), nil
 	case velesgcpapikey.GCPAPIKey:
 		return gcpAPIKeyToProto(t.Key), nil
+	case veleselasticcloudapikey.ElasticCloudAPIKey:
+		return elasticCloudAPIKeyToProto(t), nil
 	default:
 		return nil, fmt.Errorf("%w: %T", ErrUnsupportedSecretType, s)
 	}
@@ -190,6 +193,16 @@ func gcpAPIKeyToProto(key string) *spb.SecretData {
 		Secret: &spb.SecretData_GcpApiKey{
 			GcpApiKey: &spb.SecretData_GCPAPIKey{
 				Key: key,
+			},
+		},
+	}
+}
+
+func elasticCloudAPIKeyToProto(s veleselasticcloudapikey.ElasticCloudAPIKey) *spb.SecretData {
+	return &spb.SecretData{
+		Secret: &spb.SecretData_ElasticCloudApiKey{
+			ElasticCloudApiKey: &spb.SecretData_ElasticCloudAPIKey{
+				Key: s.Key,
 			},
 		},
 	}
@@ -463,6 +476,8 @@ func velesSecretToStruct(s *spb.SecretData) (veles.Secret, error) {
 		return hashicorpVaultAppRoleCredentialsToStruct(s.GetHashicorpVaultAppRoleCredentials()), nil
 	case *spb.SecretData_GcpApiKey:
 		return velesgcpapikey.GCPAPIKey{Key: s.GetGcpApiKey().GetKey()}, nil
+	case *spb.SecretData_ElasticCloudApiKey:
+		return veleselasticcloudapikey.ElasticCloudAPIKey{Key: s.GetElasticCloudApiKey().GetKey()}, nil
 	default:
 		return nil, fmt.Errorf("%w: %T", ErrUnsupportedSecretType, s.GetSecret())
 	}
