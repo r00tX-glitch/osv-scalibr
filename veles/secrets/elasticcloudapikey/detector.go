@@ -37,8 +37,8 @@ func NewDetector() veles.Detector {
 	return simpletoken.Detector{
 		MaxLen: keyMaxLen,
 		Re:     keyRe,
-		FromMatch: func(b []byte) veles.Secret {
-			return ElasticCloudAPIKey{Key: string(b)}
+		FromMatch: func(b []byte) (veles.Secret, bool) {
+			return ElasticCloudAPIKey{Key: string(b)}, true
 		},
 	}
 }
