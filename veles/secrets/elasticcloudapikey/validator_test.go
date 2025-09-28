@@ -39,7 +39,7 @@ type mockTransport struct {
 
 func (m *mockTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Replace the original URL with our test server URL
-	if req.URL.Host == "api.elastic.cloud.com" {
+	if req.URL.Host == "api.elastic-cloud.com" {
 		testURL, _ := url.Parse(m.testServer.URL)
 		req.URL.Scheme = testURL.Scheme
 		req.URL.Host = testURL.Host

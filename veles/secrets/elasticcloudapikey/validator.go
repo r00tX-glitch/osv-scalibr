@@ -29,7 +29,7 @@ var (
 
 // Endpoint used for validation.
 const (
-	apiEndpoint = "https://api.elastic.cloud.com/api/v1/account"
+	apiEndpoint = "https://api.elastic-cloud.com/api/v1/account"
 )
 
 // Validator validates Elastic Cloud API keys.
@@ -61,7 +61,7 @@ func NewValidator(opts ...ValidatorOption) *Validator {
 
 // Validate checks whether the given ElasticCloudAPIKey is valid.
 //
-// It calls GET https://api.elastic.cloud.com/api/v1/account with header "Authorization: ApiKey <key>".
+// It calls GET https://api.elastic-cloud.com/api/v1/account with header "Authorization: ApiKey <key>".
 // - 200 OK  -> authenticated and valid.
 // - 401     -> invalid API key (authentication failure).
 // - other   -> validation failed (unexpected response).
